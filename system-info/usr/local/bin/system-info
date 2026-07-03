@@ -1,0 +1,108 @@
+#!/bin/bash
+tput smcup; tput civvis
+V='\033[0;32m'; A='\033[0;34m'; R='\033[0;31m'; NC='\033[0;0m'
+limbi=("English" "Romana" "Espanol" "Francais" "Deutsch" "Italiano")
+cautare=""; sel_l=0
+while true; do
+    clear
+    echo -e "${A}=======================================${NC}"
+    echo -e "${V}      SELECT LANGUAGE / ALEGE LIMBA    ${NC}"
+    echo -e "${A}=======================================${NC}"
+    echo -e "Search/Cauta: ${V}$cautare${NC}_"
+    filtrate=()
+    for l in "${limbi[@]}"; do [[ -z "$cautare" || "${l,,}" == *"${cautare,,}"* ]] && filtrate+=("$l"); done
+    [ "$sel_l" -ge "${#filtrate[@]}" ] && sel_l=$((${#filtrate[@]} - 1)); [ "$sel_l" -lt 0 ] && sel_l=0
+    for i in "${!filtrate[@]}"; do [ "$i" -eq "$sel_l" ] && echo -e "${V}  > [*] ${filtrate[$i]}${NC}" || echo "    [ ] ${filtrate[$i]}"; done
+    IFS= read -r -sn1 tasta
+    if [[ "$tasta" == $'\x1b' ]]; then
+        read -r -sn2 -t 0.05 u
+        [[ "$u" == "[A" ]] && ((sel_l--)); [[ "$u" == "[B" ]] && ((sel_l++))
+        [[ -z "$u" ]] && { tput cnorm; tput rmcup; exit 0; }
+    elif [[ "$tasta" == $'\x7f' ]]; then cautare="${cautare%?}"
+    elif [[ "$tasta" == "" && ${#filtrate[@]} -gt 0 ]]; then L="${filtrate[$sel_l]}"; break
+    else cautare+="$tasta"; fi
+done
+
+declare -A T
+case "$L" in
+    "Romana") 
+        opt=("Curatare sistem" "Vezi resurse" "Detalii PC" "Despre" "Iesire"); msg="Apasati Q sau ESC pentru meniu..."
+        T[hdd]="=== STATISTICI SPAȚIU STOCARE (HDD) ==="; T[ram]="=== STATISTICI MEMORIE INTERNĂ (RAM) ==="; T[pc]="=== DETALII TEHNICE CALCULATOR ==="
+        T[ht]="Total: "; T[hu]="Folosit: "; T[hf]="Liber: "; T[rt]="RAM Total: "; T[ru]="RAM Folosit: "; T[rd]="RAM Disponibil: "
+        T[pcn]="Nume PC:               "; T[usr]="Utilizator curent:     "; T[cpu]="Model Procesor:        "; T[ker]="Versiune Kernel Linux: "
+        T[v]="Versiune program: 4.2"; T[by]="Creat de: Alexandru (balexandru15)";;
+    "Espanol") 
+        opt=("Limpiar sistema" "Ver recursos" "Detalles PC" "Acerca de" "Salir"); msg="Presiona Q o ESC para el menú..."
+        T[hdd]="=== ESTADÍSTICAS DEL DISCO (HDD) ==="; T[ram]="=== ESTADÍSTICAS DE LA MEMORIA (RAM) ==="; T[pc]="=== DETALLES TÉCNICOS DE LA PC ==="
+        T[ht]="Total: "; T[hu]="Usado: "; T[hf]="Libre: "; T[rt]="RAM Total: "; T[ru]="RAM Usada: "; T[rd]="RAM Disponible: "
+        T[pcn]="Nombre PC:             "; T[usr]="Usuario actual:        "; T[cpu]="Modelo de CPU:         "; T[ker]="Versión del Kernel:    "
+        T[v]="Versión del software: 4.2"; T[by]="Creado por: Alexandru (balexandru15)";;
+    "Francais") 
+        opt=("Nettoyer systeme" "Ressources" "Details PC" "A propos" "Quitter"); msg="Appuyez Q ou ESC pour le menu..."
+        T[hdd]="=== STATISTIQUES DU DISQUE (HDD) ==="; T[ram]="=== STATISTIQUES DE LA MÉMOIRE (RAM) ==="; T[pc]="=== DÉTAILS TECHNIQUES DU PC ==="
+        T[ht]="Total: "; T[hu]="Utilisé: "; T[hf]="Libre: "; T[rt]="RAM Totale: "; T[ru]="RAM Utilisée: "; T[rd]="RAM Disponible: "
+        T[pcn]="Nom du PC:             "; T[usr]="Utilisateur actuel:    "; T[cpu]="Modèle de CPU:         "; T[ker]="Version du Kernel:     "
+        T[v]="Version du logiciel: 4.2"; T[by]="Créé par: Alexandru (balexandru15)";;
+    "Deutsch") 
+        opt=("System bereinigen" "Ressourcen" "PC-Details" "Uber" "Beenden"); msg="Drücken Sie Q/ESC für Menü..."
+        T[hdd]="=== FESTPLATTEN STATISTIKEN (HDD) ==="; T[ram]="=== ARBEITSSPEICHER STATISTIKEN (RAM) ==="; T[pc]="=== TECHNISCHE PC-DETAILS ==="
+        T[ht]="Gesamt: "; T[hu]="Belegt: "; T[hf]="Frei: "; T[rt]="Gesamt RAM: "; T[ru]="Belegter RAM: "; T[rd]="Verfügbarer RAM: "
+        T[pcn]="PC-Name:               "; T[usr]="Aktueller Benutzer:    "; T[cpu]="Prozessormodell:       "; T[ker]="Linux-Kernel-Version:  "
+        T[v]="Softwareversion: 4.2"; T[by]="Erstellt von: Alexandru (balexandru15)";;
+    "Italiano") 
+        opt=("Pulisci sistema" "Risorse" "Dettagli PC" "Info" "Esci"); msg="Premi Q o ESC per il menu..."
+        T[hdd]="=== STATISTICHE SPAZIO DISCO (HDD) ==="; T[ram]="=== STATISTICHE MEMORIA (RAM) ==="; T[pc]="=== DETTAGLI TECNICI DEL PC ==="
+        T[ht]="Totale: "; T[hu]="Usato: "; T[hf]="Libero: "; T[rt]="RAM Totale: "; T[ru]="RAM Usata: "; T[rd]="RAM Disponibile: "
+        T[pcn]="Nome PC:               "; T[usr]="Utente corrente:       "; T[cpu]="Modello CPU:           "; T[ker]="Versione Kernel Linux: "
+        T[v]="Versione del software: 4.2"; T[by]="Creato da: Alexandru (balexandru15)";;
+    *) 
+        opt=("Clean system" "View resources" "Tech Info" "About" "Exit"); msg="Press Q or ESC to return to menu..."
+        T[hdd]="=== DISK SPACE STATISTICS (HDD) ==="; T[ram]="=== MEMORY STATISTICS (RAM) ==="; T[pc]="=== COMPUTER TECHNICAL DETAILS ==="
+        T[ht]="Total Space:   "; T[hu]="Used Space:    "; T[hf]="Free Space:    "; T[rt]="Total RAM:     "; T[ru]="Used RAM:      "; T[rd]="Available RAM: "
+        T[pcn]="PC Name:               "; T[usr]="Current User:          "; T[cpu]="CPU Model:             "; T[ker]="Linux Kernel Version:  "
+        T[v]="Software Version: 4.2"; T[by]="Developed by: Alexandru (balexandru15)";;
+esac
+
+sel=0
+while true; do
+    clear
+    echo -e "${A}=======================================${NC}"
+    echo -e "${V}       SYSTEM-INFO - $L                ${NC}"
+    echo -e "${A}=======================================${NC}"
+    for i in "${!opt[@]}"; do [ "$i" -eq "$sel" ] && echo -e "${V} > [*] ${opt[$i]}${NC}" || echo "   [ ] ${opt[$i]}"; done
+    IFS= read -r -sn3 t
+    case "$t" in
+        $'\x1b[A') ((sel--)); [ "$sel" -lt 0 ] && sel=$((${#opt[@]} - 1)) ;;
+        $'\x1b[B') ((sel++)); [ "$sel" -ge "${#opt[@]}" ] && sel=0 ;;
+        "")
+            clear
+            case "$sel" in
+                0) sudo apt-get autoremove -y && sudo apt-get clean; sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null;;
+                1) 
+                    echo -e "${V}${T[hdd]}${NC}"
+                    df -h / | tail -n 1 | awk -v t="${T[ht]}" -v u="${T[hu]}" -v f="${T[hf]}" '{print t $2 "\n" u $3 "\n" f $4}'
+                    echo -e "\n${V}${T[ram]}${NC}"
+                    free -h | grep "Mem" | awk -v t="${T[rt]}" -v u="${T[ru]}" -v a="${T[rd]}" '{print t $2 "\n" u $3 "\n" a $7}'
+                    ;;
+                2) 
+                    echo -e "${V}${T[pc]}${NC}"
+                    echo -e "${T[pcn]}$(hostname)"
+                    echo -e "${T[usr]}$(whoami)"
+                    echo -e "${T[cpu]}$(grep -m 1 'model name' /proc/cpuinfo | sed 's/model name[[:space:]]*:[[:space:]]*//')"
+                    echo -e "${T[ker]}$(uname -r)"
+                    ;;
+                3) 
+                    echo -e "${V}███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗\n██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║\n███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║\n╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║\n███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║\n╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝\n                     ██╗███╗   ██╗███████╗ ██████╗\n                     ██║████╗  ██║██╔════╝██╔═══██╗\n                     ██║██╔██╗ ██║█████╗  ██║   ██║\n                     ██║██║╚██╗██║██╔══╝  ██║   ██║\n                     ██║██║ ╚████║██║     ╚██████╔╝\n                     ╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝${NC}\n"
+                    echo -e "${T[by]}"
+                    echo -e "${T[v]}"
+                    echo "Release Year: 2026"
+                    ;;
+                4) tput cnorm; tput rmcup; exit 0;;
+            esac
+            echo -e "\n${A}---------------------------------------${NC}\n$msg"
+            while read -r -t 0.001; do :; done
+            while true; do IFS= read -r -sn1 k; [[ "$k" == $'\x1b' || "$k" == "q" || "$k" == "Q" ]] && break; done
+            while read -r -t 0.001; do :; done
+            ;;
+    esac
+done

@@ -1,0 +1,6 @@
+Package: system-info
+Version: 4.1
+Architecture: all
+Maintainer: Alexandru <balexandru15@ubuntu.com>
+Description: Multilingual system info utility
+
