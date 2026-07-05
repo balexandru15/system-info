@@ -14,10 +14,10 @@
         .btn-main:hover { background-color: #2ea043; box-shadow: 0 0 15px rgba(46,160,67,0.5); }
         .code-box { background-color: #010409; padding: 15px; border-radius: 6px; border: 1px solid #30363d; font-family: 'Courier New', Courier, monospace; color: #58a6ff; text-align: left; overflow-x: auto; }
         .versions { margin-top: 40px; text-align: left; }
-        .version-item { background: #21262d; padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 5px solid #58a6ff; display: flex; justify-content: space-between; align-items: center; }
+        .version-item { background: #21262d; padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 5px solid #2ea043; display: flex; justify-content: space-between; align-items: center; }
         .version-name { font-weight: bold; color: #ffffff; }
-        .btn-sub { background-color: #30363d; color: #c9d1d9; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-size: 0.9em; transition: 0.2s; border: 1px solid #8b949e; }
-        .btn-sub:hover { background-color: #8b949e; color: #0d1117; }
+        .btn-sub { background-color: #238636; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-size: 0.9em; font-weight: bold; transition: 0.2s; border: 1px solid #30363d; }
+        .btn-sub:hover { background-color: #2ea043; box-shadow: 0 0 10px rgba(46,160,67,0.4); }
         footer { margin-top: 60px; padding: 20px; color: #8b949e; font-size: 0.9em; border-top: 1px solid #30363d; }
     </style>
 </head>
@@ -30,7 +30,7 @@
 
 <div class="container">
     <h2>Instalare Rapidă într-o Singură Linie</h2>
-    <p>Copiază comanda de mai jos și lipește-o în terminalul tău pentru a instala direct ultima versiune:</p>
+    <p>Copiază comanda de mai jos și lipește-o în terminalul tău pentru a instala direct ultima versiune (v4.6):</p>
     <div class="code-box">
         curl -sL https://githubusercontent.com -o system-info.deb && sudo apt install ./system-info.deb && rm system-info.deb && system-info
     </div>
@@ -39,6 +39,7 @@
         <h2>Arhivă Versiuni Disponibile (Istoric)</h2>
         <p>Alege și descarcă versiunea pe care dorești să o folosești:</p>
         
+        <!-- Versiunea 4.6 -->
         <div class="version-item">
             <div>
                 <span class="version-name">SYSTEM-INFO v4.6 (Ultima Versiune)</span><br>
@@ -47,20 +48,22 @@
             <a href="https://githubusercontent.com" class="btn-sub">Descarcă .DEB</a>
         </div>
 
-        <div class="version-item" style="border-left-color: #8b949e;">
+        <!-- Versiunea 4.3 -->
+        <div class="version-item">
             <div>
                 <span class="version-name">SYSTEM-INFO v4.3</span><br>
                 <small style="color:#8b949e">Adaugă scanarea antivirus bazată pe ClamAV și detectarea celor mai mari 5 fișiere.</small>
             </div>
-            <a href="#" class="btn-sub" style="opacity: 0.6; cursor: not-allowed;">În arhivă</a>
+            <a href="https://githubusercontent.com" class="btn-sub">Descarcă .DEB</a>
         </div>
 
-        <div class="version-item" style="border-left-color: #8b949e;">
+        <!-- Versiunea 4.2 -->
+        <div class="version-item">
             <div>
                 <span class="version-name">SYSTEM-INFO v4.2</span><br>
                 <small style="color:#8b949e">Versiunea clasică stabilă cu monitorul mare ASCII art și selecție de limbi.</small>
             </div>
-            <a href="#" class="btn-sub" style="opacity: 0.6; cursor: not-allowed;">În arhivă</a>
+            <a href="https://githubusercontent.com" class="btn-sub">Descarcă .DEB</a>
         </div>
     </div>
 </div>
